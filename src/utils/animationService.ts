@@ -6,7 +6,7 @@ export class AnimationService {
         start: 1,
         end: 2
       }),
-      frameRate: 100,
+      frameRate: 10,
       repeat: -1,
       hideOnComplete: true
     });
