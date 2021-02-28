@@ -2,11 +2,11 @@
   box-sizing: border-box; }
 
 body {
-  background: #187a20;
+  background: #808080;
   display: flex;
   justify-content: center;
   align-content: center; }
 
 canvas {
-  border: #376110 1px solid;
+  border: black 1px solid;
   border-radius: 5px; }

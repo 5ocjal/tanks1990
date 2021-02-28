@@ -1,12 +1,10 @@
 import "phaser";
 import { ArenaScene } from "./scenes/arena-scene";
 
-
-
 const config: Phaser.Types.Core.GameConfig = {
-  width: 900,
-  height: 700,
   scale: {
+    width: 400,
+    height: 400,
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
@@ -16,7 +14,7 @@ const config: Phaser.Types.Core.GameConfig = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 300 },
+      gravity: { y: 0 },
       debug: false,
     },
   },
