@@ -1,11 +1,12 @@
 import { AnimationService } from '../utils/animationService';
+import { Bullet } from './enums/bullet.model';
 import { Speed } from './enums/speed.enum';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   animationService = new AnimationService();
   inputCursor;
   isMoving = false;
-  game;
+  config;
   sounds = {
     idle: null,
     move: null,
@@ -14,7 +15,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, 'playerTank');
     config.scene.sys.arcadePhysics.world.enableBody(this, 0);
-    this.game = config.scene;
+    this.config = config;
     this.setCollideWorldBounds(true);
     this.setScale(2);
     this.setAngle(0);
@@ -24,15 +25,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.inputCursor = config.scene.input.keyboard.createCursorKeys();
     config.scene.add.existing(this);
-    console.log('player', this);
-    console.log('scene', config);
     this.create();
   }
 
   preload() {}
   create() {
-    this.sounds.idle = this.game.sound.add('idle', { volume: 0.3 });
-    this.sounds.move = this.game.sound.add('move', { volume: 0.3 });
+    this.sounds.idle = this.config.scene.sound.add('idle', { volume: 0.3 });
+    this.sounds.move = this.config.scene.sound.add('move', { volume: 0.3 });
   }
   update() {}
   destroy() {}
@@ -70,15 +69,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (Phaser.Input.Keyboard.JustDown(this.inputCursor.space)) {
       console.log('shooooooot');
-      //   this.createBullet(this.player);
-      //   console.log(this.player);
+      let bullet = new Bullet(this.config, this);
     }
 
     if (this.isMoving) {
       //this.sounds.idle.stop();
       this.sounds.move.play();
-    }
-     else {
+    } else {
       this.sounds.move.stop();
       //this.sounds.idle.play();
     }
