@@ -12,10 +12,12 @@ export class AnimationService {
     });
 
     scene.anims.create({
-      key: "stop",
-      frames: [{ key: "playerTank", frame: 0 }],
-      frameRate: 1,
-      repeat: 0,
+      key: "hit",
+      frames: scene.anims.generateFrameNumbers("bulletHit", {
+        start: 0,
+        end: 2
+      }),
+      frameRate: 20,
       hideOnComplete: true
     });
   }
