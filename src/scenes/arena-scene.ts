@@ -1,14 +1,11 @@
 import { Player } from './../models/player.model';
 import { AnimationService } from '../utils/animationService';
-import { Collection } from '../models/collections.model';
-import { Speed } from '../models/enums/speed.enum';
 import { AssetsLoader } from '../models/assetsLoader/assetsLoader';
 
 export class ArenaScene extends Phaser.Scene {
   animationService = new AnimationService();
   assetsLoader = new AssetsLoader();
   player;
-  bullet;
   bulletsGroup;
   frameSize = {
     frameWidth: 16,

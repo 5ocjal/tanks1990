@@ -1,6 +1,7 @@
-import { Speed } from './speed.enum';
+import { Speed } from './enums/speed.enum';
 
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
+
   constructor(config, owner) {
     super(config.scene, owner.x, owner.y, 'bullet');
     config.scene.sys.arcadePhysics.world.enableBody(this, 0);
@@ -8,15 +9,9 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true, 1, 1);
     this.setScale(0.4);
     config.scene.add.existing(this);
+    config.scene.children.parent.bulletsGroup.children.set(this);
     this.setBulletMove(this, owner);
   }
-
-  //     this.bulletsGroup.add(this.bullet);
-
-  //     this.physics.add.collider(this.bullet, this.player, () => {
-  //       this.bulletCollision(this.bullet);
-  //     });
-  //   }
 
   private setBulletMove(bullet, owner) {
     switch (owner.angle) {
@@ -40,6 +35,6 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   bulletCollision(bullet) {
-    console.log('boom', bullet.name);
+    console.log('boom');
   }
 }

@@ -1,5 +1,5 @@
 import { AnimationService } from '../utils/animationService';
-import { Bullet } from './enums/bullet.model';
+import { Bullet } from './bullet.model';
 import { Speed } from './enums/speed.enum';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
@@ -68,8 +68,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.inputCursor.space)) {
-      console.log('shooooooot');
-      let bullet = new Bullet(this.config, this);
+      new Bullet(this.config, this);
     }
 
     if (this.isMoving) {
