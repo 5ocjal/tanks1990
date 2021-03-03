@@ -1,24 +1,44 @@
 export class AnimationService {
   createAnimation(scene) {
     scene.anims.create({
-      key: "move",
-      frames: scene.anims.generateFrameNumbers("playerTank", {
+      key: 'move',
+      frames: scene.anims.generateFrameNumbers('playerTank', {
         start: 1,
-        end: 2
+        end: 2,
       }),
       frameRate: 10,
       repeat: -1,
-      hideOnComplete: true
+      hideOnComplete: false,
     });
 
     scene.anims.create({
-      key: "hit",
-      frames: scene.anims.generateFrameNumbers("bulletHit", {
-        start: 0,
-        end: 2
+      key: 'idle',
+      frames: scene.anims.generateFrameNumbers('idleTank', {
+        start: 1,
+        end: 2,
       }),
-      frameRate: 20,
-      hideOnComplete: true
+      frameRate: 10,
+      repeat: -1,
+      hideOnComplete: false,
+    });
+
+    scene.anims.create({
+      key: 'hit',
+      frames: scene.anims.generateFrameNumbers('bulletHit', {
+        start: 0,
+        end: 3,
+      }),
+      frameRate: 10,
+      repeat: 0,
+      hideOnComplete: true,
+    });
+
+    scene.anims.create({
+      key: 'spawn',
+      frames: 'spawn',
+      repeat: 3,
+      frameRate: 10,
+      hideOnComplete: true,
     });
   }
 }

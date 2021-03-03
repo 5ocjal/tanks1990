@@ -4,7 +4,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
 
   constructor(config, owner) {
     super(config.scene, owner.x, owner.y, 'bullet');
-    config.scene.sys.arcadePhysics.world.enableBody(this, 0);
+    this.scene.physics.world.enable(this);
     this.setName(owner.name);
     this.setCollideWorldBounds(true, 1, 1);
     this.setScale(0.4);
@@ -35,6 +35,6 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   bulletCollision(bullet) {
-    console.log('boom');
+    
   }
 }

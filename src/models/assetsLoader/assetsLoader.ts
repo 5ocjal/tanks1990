@@ -7,13 +7,18 @@ export class AssetsLoader {
       scene.frameSize
     );
     scene.load.spritesheet(
+      'idleTank',
+      '../../assets/sprites/idleTank.png',
+      scene.frameSize
+    );
+    scene.load.spritesheet(
       'bulletHit',
       '../../assets/sprites/bulletHit.png',
       scene.frameSize
     );
     scene.load.spritesheet(
       'spawn',
-      '../../assets/sprites/tankBorn.png',
+      '../../assets/sprites/spawn.png',
       scene.frameSize
     );
 

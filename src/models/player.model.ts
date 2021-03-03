@@ -3,10 +3,19 @@ import { Bullet } from './bullet.model';
 import { Speed } from './enums/speed.enum';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
+  config;
   animationService = new AnimationService();
   inputCursor;
+
+  name = null;
+  life = 3;
+  score = 0;
+  hasTurbo = 0;
+  hasArmor = 0;
+  hasCollection = 0;
   isMoving = false;
-  config;
+  isPlayer = false;
+
   sounds = {
     idle: null,
     move: null,
@@ -14,7 +23,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   constructor(config) {
     super(config.scene, config.x, config.y, 'playerTank');
-    config.scene.sys.arcadePhysics.world.enableBody(this, 0);
+    this.scene.physics.world.enable(this);
     this.config = config;
     this.setCollideWorldBounds(true);
     this.setScale(2);
@@ -23,7 +32,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setVelocityX(1.0);
     this.setActive(true);
 
-    this.inputCursor = config.scene.input.keyboard.createCursorKeys();
+        this.inputCursor = config.scene.input.keyboard.createCursorKeys();
     config.scene.add.existing(this);
     this.create();
   }
@@ -42,29 +51,24 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.isMoving = true;
       this.setVelocityY(-Speed.PLAYER);
       this.setAngle(0);
-      this.play('move');
     } else if (this.inputCursor.down.isDown) {
       if (this.isMoving) return;
       this.isMoving = true;
       this.setVelocityY(Speed.PLAYER);
       this.setAngle(180);
-      this.play('move');
     } else if (this.inputCursor.left.isDown) {
       if (this.isMoving) return;
       this.isMoving = true;
       this.setVelocityX(-Speed.PLAYER);
       this.setAngle(270);
-      this.play('move');
     } else if (this.inputCursor.right.isDown) {
       if (this.isMoving) return;
       this.isMoving = true;
       this.setVelocityX(Speed.PLAYER);
       this.setAngle(90);
-      this.play('move');
     } else {
       this.isMoving = false;
       this.setVelocity(0);
-      this.anims.stop();
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.inputCursor.space)) {
@@ -73,10 +77,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (this.isMoving) {
       //this.sounds.idle.stop();
+      this.play('move');
       this.sounds.move.play();
     } else {
+      this.play('idle');
       this.sounds.move.stop();
       //this.sounds.idle.play();
     }
+  }
+
+  playerMonitor() {
+    this.scene.events.off;
+    this.destroy();
+    this.setActive(false);
+    console.log('destroy', this);
   }
 }
