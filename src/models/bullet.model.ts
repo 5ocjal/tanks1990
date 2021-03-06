@@ -1,3 +1,4 @@
+import { GameState } from './../state/gameState';
 import { Speed } from './enums/speed.enum';
 
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
@@ -9,7 +10,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true, 1, 1);
     this.setScale(0.4);
     config.scene.add.existing(this);
-    config.scene.children.parent.bulletsGroup.children.set(this);
+    config.scene.bulletsGroup.children.set(this);
     this.setBulletMove(this, owner);
   }
 
@@ -34,7 +35,5 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  bulletCollision(bullet) {
-    
-  }
+  bulletCollision(bullet) {}
 }

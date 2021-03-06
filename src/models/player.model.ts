@@ -1,5 +1,6 @@
 import { AnimationService } from '../utils/animationService';
 import { Bullet } from './bullet.model';
+import { PlayerState } from './enums/playerState';
 import { Speed } from './enums/speed.enum';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
@@ -8,13 +9,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   inputCursor;
 
   name = null;
+  state = PlayerState.isIdle;
   life = 3;
   score = 0;
   hasTurbo = 0;
   hasArmor = 0;
   hasCollection = 0;
-  isMoving = false;
-  isPlayer = false;
+  isPlayer = true;
 
   sounds = {
     idle: null,
@@ -23,8 +24,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   constructor(config) {
     super(config.scene, config.x, config.y, 'playerTank');
-    this.scene.physics.world.enable(this);
     this.config = config;
+    this.scene.physics.world.enable(this);
     this.setCollideWorldBounds(true);
     this.setScale(2);
     this.setAngle(0);
@@ -32,42 +33,42 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setVelocityX(1.0);
     this.setActive(true);
 
-        this.inputCursor = config.scene.input.keyboard.createCursorKeys();
+    this.inputCursor = config.scene.input.keyboard.createCursorKeys();
     config.scene.add.existing(this);
     this.create();
   }
 
-  preload() {}
   create() {
+    this.config.scene.playersGroup.children.set(this);
     this.sounds.idle = this.config.scene.sound.add('idle', { volume: 0.3 });
     this.sounds.move = this.config.scene.sound.add('move', { volume: 0.3 });
   }
-  update() {}
-  destroy() {}
 
   playerControl() {
+    let oldState = this.state;
+
     if (this.inputCursor.up.isDown) {
-      if (this.isMoving) return;
-      this.isMoving = true;
+      if (this.state === PlayerState.isMoving) return;
+      this.state = PlayerState.isMoving;
       this.setVelocityY(-Speed.PLAYER);
       this.setAngle(0);
     } else if (this.inputCursor.down.isDown) {
-      if (this.isMoving) return;
-      this.isMoving = true;
+      if (this.state === PlayerState.isMoving) return;
+      this.state = PlayerState.isMoving;
       this.setVelocityY(Speed.PLAYER);
       this.setAngle(180);
     } else if (this.inputCursor.left.isDown) {
-      if (this.isMoving) return;
-      this.isMoving = true;
+      if (this.state === PlayerState.isMoving) return;
+      this.state = PlayerState.isMoving;
       this.setVelocityX(-Speed.PLAYER);
       this.setAngle(270);
     } else if (this.inputCursor.right.isDown) {
-      if (this.isMoving) return;
-      this.isMoving = true;
+      if (this.state === PlayerState.isMoving) return;
+      this.state = PlayerState.isMoving;
       this.setVelocityX(Speed.PLAYER);
       this.setAngle(90);
     } else {
-      this.isMoving = false;
+      this.state = PlayerState.isIdle;
       this.setVelocity(0);
     }
 
@@ -75,21 +76,31 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       new Bullet(this.config, this);
     }
 
-    if (this.isMoving) {
-      //this.sounds.idle.stop();
-      this.play('move');
-      this.sounds.move.play();
-    } else {
-      this.play('idle');
-      this.sounds.move.stop();
-      //this.sounds.idle.play();
+    if (oldState !== this.state && oldState !== PlayerState.isDestroyed) {
+      this.playerMonitor();
     }
   }
 
   playerMonitor() {
-    this.scene.events.off;
-    this.destroy();
-    this.setActive(false);
-    console.log('destroy', this);
+
+    switch (this.state) {
+      case PlayerState.isIdle:
+        this.play('idle');
+        this.sounds.move.stop();
+        this.sounds.idle.play();
+        break;
+      case PlayerState.isMoving:
+        this.play('move');
+        this.sounds.idle.stop();
+        this.sounds.move.play();
+        break;
+      case PlayerState.isDestroyed:
+        this.sounds.idle.stop();
+        this.sounds.move.stop();
+        break;
+
+      default:
+        break;
+    }
   }
 }

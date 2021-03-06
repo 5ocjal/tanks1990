@@ -1,13 +1,15 @@
 import { Player } from './../models/player.model';
 import { AnimationService } from '../utils/animationService';
 import { AssetsLoader } from '../models/assetsLoader/assetsLoader';
+import { PlayerState } from '../models/enums/playerState';
+import { GameState } from '../state/gameState';
 
-export class ArenaScene extends Phaser.Scene {
-  animationService = new AnimationService();
-  assetsLoader = new AssetsLoader();
+export class ArenaScene extends GameState {
+  gameState;
+  animationService;
+  assetsLoader;
   playerInfo;
   player;
-  bulletsGroup;
   frameSize = {
     frameWidth: 16,
     frameHeight: 16,
@@ -17,6 +19,9 @@ export class ArenaScene extends Phaser.Scene {
     super({
       key: 'ArenaScene',
     });
+    this.assetsLoader = new AssetsLoader();
+    this.animationService = new AnimationService();
+    this.gameState = new GameState('ArenaScene');
   }
 
   preload() {
@@ -26,7 +31,8 @@ export class ArenaScene extends Phaser.Scene {
 
   create() {
     this.animationService.createAnimation(this);
-    this.bulletsGroup = this.physics.add.group({ runChildUpdate: true });
+    super.create();
+
     this.player = new Player({
       scene: this,
       x: 100,
@@ -35,34 +41,14 @@ export class ArenaScene extends Phaser.Scene {
       name: 'player1',
     });
     this.playerInfo = this.player.life;
-
-    this.physics.add.collider(this.bulletsGroup, this.player, (i1, i2) => {
-      if (this.player.hasArmor > 0) {
-        console.log('a');
-        this.player.hasArmor--;
-      } else {
-        console.log('b');
-        this.player.life--;
-        this.playerInfo.setText(`${'Player: ' + this.player.life.toString()}`);
-
-        if (this.player.life === 0) {
-          this.player.stop();
-          this.anims.play('hit', i1);
-          i1.destroy();
-        }
-  }
-
-      i2.destroy();
-    });
-
     this.playerInfo = this.add.text(16, 16, `${'Player: ' + this.playerInfo}`, {
       fontSize: '12px',
     });
-
   }
 
   update() {
-    this.player ? this.player.playerControl() : this.gameOver();
+    this.player.active ? this.player.playerControl() : this.gameOver();
+    this.playerInfo.setText(`${'Player: ' + this.player.life.toString()}`);
   }
 
   gameOver() {
