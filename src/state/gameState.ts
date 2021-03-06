@@ -1,9 +1,11 @@
+import { Bullet } from '../models/bullet.model';
 import { PlayerState } from '../models/enums/playerState';
 
 export class GameState extends Phaser.Scene {
   playersGroup;
   bulletsGroup;
   enemiesGroup;
+  bricksGroup;
 
   constructor(key) {
     super(key);
@@ -13,6 +15,7 @@ export class GameState extends Phaser.Scene {
     this.bulletsGroup = this.physics.add.group({ runChildUpdate: true });
     this.playersGroup = this.physics.add.group({ runChildUpdate: true });
     this.enemiesGroup = this.physics.add.group({ runChildUpdate: true });
+    this.bricksGroup = this.physics.add.group({ runChildUpdate: true });
     this.createColiders();
     console.log('gameState ready');
   }
@@ -22,15 +25,25 @@ export class GameState extends Phaser.Scene {
       this.bulletsGroup,
       this.playersGroup,
       (bullet, player) => {
-        this.destroyBullet(bullet);
+        this.destroyBullet([bullet]);
         this.destroyPlayer(player);
-      }
+      },
+      null,
+      this
     );
+
+    this.physics.add.collider(this.bulletsGroup, this.bulletsGroup, (b1, b2) => {
+        this.destroyBullet([b1, b2]);
+    } );
   }
 
-  destroyBullet(bullet) {
-    bullet.play('hit');
-    this.bulletsGroup.remove(bullet, true, true);
+  destroyBullet(bullet: any[]) {
+    bullet.forEach((b) => {
+      b.play('scratch', false);
+      b.once('animationcomplete', () => {
+        this.bulletsGroup.remove(b, true, true);
+      });
+    });
   }
 
   destroyPlayer(player) {

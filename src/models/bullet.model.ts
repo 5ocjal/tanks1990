@@ -9,6 +9,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setName(owner.name);
     this.setCollideWorldBounds(true, 1, 1);
     this.setScale(0.4);
+    this.setBounce(0);
     config.scene.add.existing(this);
     config.scene.bulletsGroup.children.set(this);
     this.setBulletMove(this, owner);

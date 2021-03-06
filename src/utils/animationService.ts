@@ -23,6 +23,12 @@ export class AnimationService {
     });
 
     scene.anims.create({
+      key: 'scratch',
+      frames: [{ key: 'bulletHit', frame: 2 }],
+      frameRate: 100,
+    });
+
+    scene.anims.create({
       key: 'hit',
       frames: scene.anims.generateFrameNumbers('bulletHit', {
         start: 0,
