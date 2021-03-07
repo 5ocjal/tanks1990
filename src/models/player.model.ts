@@ -28,11 +28,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.config = config;
     this.scene.physics.world.enable(this);
     this.setCollideWorldBounds(true);
-    this.setScale(2);
     this.setAngle(0);
     this.setName(config.name);
     this.setVelocityX(1.0);
     this.setActive(true);
+  
 
     this.inputCursor = config.scene.input.keyboard.createCursorKeys();
     config.scene.add.existing(this);
@@ -94,7 +94,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.play('idle');
         this.sounds.move.stop();
         this.sounds.idle.loop = true;
-        this.sounds.idle.play();
+      //  this.sounds.idle.play();
         break;
       case PlayerState.isMoving:
         this.play('move');

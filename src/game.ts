@@ -2,20 +2,20 @@ import "phaser";
 import { ArenaScene } from "./scenes/arena-scene";
 
 const config: Phaser.Types.Core.GameConfig = {
-  scale: {
-    width: 400,
-    height: 400,
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-  },
   type: Phaser.AUTO,
   parent: 'game',
   scene: [ArenaScene],
+  scale: {
+    width: 180,
+    height: 180,
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   physics: {
     default: 'arcade',
     arcade: {
       gravity: { y: 0 },
-      debug: true,
+      debug: false,
     },
   },
   dom: {

@@ -8,7 +8,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enable(this);
     this.setName(owner.name);
     this.setCollideWorldBounds(true, 1, 1);
-    this.setScale(0.4);
+    this.setScale(0.2);
     this.setBounce(0);
     config.scene.add.existing(this);
     config.scene.bulletsGroup.children.set(this);
@@ -18,19 +18,19 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
   private setBulletMove(bullet, owner) {
     switch (owner.angle) {
       case 0:
-        bullet.setPosition(bullet.x, bullet.y - 20);
+        bullet.setPosition(bullet.x, bullet.y - 8);
         bullet.setVelocityY(-Speed.BULLET);
         break;
       case -180:
-        bullet.setPosition(bullet.x, bullet.y + 20);
+        bullet.setPosition(bullet.x, bullet.y + 8);
         bullet.setVelocityY(Speed.BULLET);
         break;
       case 90:
-        bullet.setPosition(bullet.x + 20, bullet.y);
+        bullet.setPosition(bullet.x + 8, bullet.y);
         bullet.setVelocityX(Speed.BULLET);
         break;
       case -90:
-        bullet.setPosition(bullet.x - 20, bullet.y);
+        bullet.setPosition(bullet.x - 8, bullet.y);
         bullet.setVelocityX(-Speed.BULLET);
         break;
     }

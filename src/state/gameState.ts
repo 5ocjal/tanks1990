@@ -77,27 +77,43 @@ export class GameState extends Phaser.Scene {
   }
 
   destroyBrick(bullet, brick) {
-    brick.play('hit');
-    brick.once('animationcomplete', () => {
-      this.bricksGroup.remove(brick, true, true);
-    });
+    bullet.play('scratch');
+    
+    if (bullet.body.touching.right && brick.body.touching.left) {
+      brick.setCrop(0, 0, brick.body.width - 4, brick.body.height);
+      brick.setSize(brick.body.width - 4, brick.body.height);
+      brick.body.offset.x -= 4;
+      brick.setX(brick.x + 4);
+      brick.durableX--;
+    }
 
-    // TO DO DESTROY BRICK IN SEQUENCE
-    // if (bullet.body.touching.right && brick.body.touching.left) {
-    //   console.log('Pizddło z lewej!');
-    //   brick.scaleX = 1
-    // }
+    if (bullet.body.touching.left && brick.body.touching.right) {
+      brick.setCrop(0, 0, brick.body.width - 4, brick.body.height);
+      brick.setSize(brick.body.width - 4, brick.body.height);
+      brick.body.offset.x -= 4;
+      brick.durableX--;
+    }
 
-    // if (bullet.body.touching.left && brick.body.touching.right) {
-    //   console.log('Pizddło z prawej!');
-    // }
+    if (bullet.body.touching.down && brick.body.touching.up) {
+      brick.setCrop(0, 0, brick.body.width, brick.body.height - 4);
+      brick.setSize(brick.body.width, brick.body.height - 4);
+      brick.body.offset.y -= 4;
+      brick.setY(brick.y + 4);
+      brick.durableY--;
+    }
 
-    // if (bullet.body.touching.down && brick.body.touching.up) {
-    //   console.log('Pizddło z góry!');
-    // }
+    if (bullet.body.touching.up && brick.body.touching.down) {
+      brick.setCrop(0, 0, brick.body.width, brick.body.height - 4);
+      brick.setSize(brick.body.width, brick.body.height - 4, true);
+      brick.body.offset.y -= 4;
+      brick.durableY--;
+    }
 
-    // if (bullet.body.touching.up && brick.body.touching.down) {
-    //   console.log('Pizddło z dołu!');
-    // }
+    if (brick.durableX === 0 || brick.durableY === 0) {
+      brick.play('hit');
+      brick.once('animationcomplete', () => {
+        this.bricksGroup.remove(brick, true, true);
+      });
+    }
   }
 }
