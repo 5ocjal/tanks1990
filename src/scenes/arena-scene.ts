@@ -1,19 +1,18 @@
 import { Player } from './../models/player.model';
 import { AnimationService } from '../utils/animationService';
 import { AssetsLoader } from '../models/assetsLoader/assetsLoader';
-import { PlayerState } from '../models/enums/playerState';
 import { GameState } from '../state/gameState';
+import { Brick } from '../models/brick.model';
 
 export class ArenaScene extends GameState {
   gameState;
   animationService;
   assetsLoader;
+  spawnPoint;
   playerInfo;
   player;
-  frameSize = {
-    frameWidth: 16,
-    frameHeight: 16,
-  };
+
+  brick;
 
   constructor() {
     super({
@@ -35,15 +34,16 @@ export class ArenaScene extends GameState {
 
     this.player = new Player({
       scene: this,
-      x: 100,
-      y: 90,
-      texture: 'playerTank',
+      x: 140,
+      y: 384,
       name: 'player1',
     });
     this.playerInfo = this.player.life;
     this.playerInfo = this.add.text(16, 16, `${'Player: ' + this.playerInfo}`, {
       fontSize: '12px',
     });
+
+    this.brick = new Brick({ scene: this, x: 180, y: 120 });
   }
 
   update() {

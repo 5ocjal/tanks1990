@@ -32,7 +32,7 @@ export class AnimationService {
       key: 'hit',
       frames: scene.anims.generateFrameNumbers('bulletHit', {
         start: 0,
-        end: 3,
+        end: 2,
       }),
       frameRate: 10,
       repeat: 0,

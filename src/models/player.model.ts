@@ -20,6 +20,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   sounds = {
     idle: null,
     move: null,
+    shot: null,
   };
 
   constructor(config) {
@@ -40,8 +41,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   create() {
     this.config.scene.playersGroup.children.set(this);
-    this.sounds.idle = this.config.scene.sound.add('idle', { volume: 0.3 });
-    this.sounds.move = this.config.scene.sound.add('move', { volume: 0.3 });
+
+    this.sounds = {
+      idle: this.config.scene.sound.add('idle', { volume: 0.3 }),
+      move: this.config.scene.sound.add('move', { volume: 0.3 }),
+      shot: this.config.scene.sound.add('shot', { volume: 0.3 }),
+    }
   }
 
   playerControl() {
@@ -73,6 +78,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.inputCursor.space)) {
+      this.sounds.shot.play();
       new Bullet(this.config, this);
     }
 
@@ -87,6 +93,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       case PlayerState.isIdle:
         this.play('idle');
         this.sounds.move.stop();
+        this.sounds.idle.loop = true;
         this.sounds.idle.play();
         break;
       case PlayerState.isMoving:
